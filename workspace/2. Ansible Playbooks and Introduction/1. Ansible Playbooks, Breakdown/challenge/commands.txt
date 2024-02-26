@@ -1,0 +1,4 @@
+ansible-playbook motd_playbook.yaml
+
+To cleanup the file that we created
+ansible ubuntu -m file -a "path=/etc/update-motd.d/60-ansible-motd state=absent" -o

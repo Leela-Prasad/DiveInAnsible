@@ -1,0 +1,36 @@
+setup gathers all properties(facts) for that host
+ansible centos1 -m setup
+ansible all -m setup
+
+creates a file using touch command
+ansible all -m file -a "path=/tmp/test state=touch"
+
+change file permissions
+ansible all -m file -a "path=/tmp/test state=file mode=600"
+
+copies file from local to remote
+ansible all -m copy -a "src=/tmp/x dest=/tmp/x"
+
+copies file using remote source to remote destination
+ansible all -m copy -a "remote_src=yes src=/tmp/x dest=/tmp/y"
+
+command module is the default module and is used to execute command on the target node
+ansible all -a "hostname"
+or
+ansible all -m command -a "hostname"
+
+
+ansible all -a "touch /tmp/test_file creates=/tmp/test_file"
+
+
+ansible all -a "rm /tmp/test_file removes=/tmp/test_file"
+
+
+fetch module copies from remote to target
+ansible all -m file -a "path=/tmp/test_modules.txt state=touch mode=600"
+ansible all -m fetch -a "src=/tmp/test_modules.txt dest=/tmp/"
+
+
+to get documentation
+ansible-doc <module-name>
+ansible-doc file

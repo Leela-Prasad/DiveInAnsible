@@ -1,0 +1,16 @@
+---
+# YAML documents begin with the document separator ---
+
+# Hosts: where our play will run and options it will run with
+- hosts: linux
+
+  vars_files:
+    - external_vault_vars.yaml
+
+  # Tasks: the list of tasks that will be executed within the play, this section
+  # can also be used for pre and post tasks
+  tasks:
+    - name: Show external vault var
+      debug:
+        var: external_vault_var
+...

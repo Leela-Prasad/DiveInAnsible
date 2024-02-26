@@ -1,0 +1,13 @@
+---
+
+- set_fact:
+    include_tasks_var: foo
+
+- name: 2nd include task
+  debug:
+    msg: 2nd include task
+
+- name: 3rd include task
+  debug:
+    msg: 3rd include task
+...

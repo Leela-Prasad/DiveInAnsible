@@ -1,0 +1,33 @@
+---
+-
+  # Hosts: where our play will run and options it will run with
+  hosts: centos1
+  gather_facts: False
+
+  # Vars: variables that will apply to the play, on all target systems
+  vars:
+    named_list:
+      - item1
+      - item2
+      - item3
+      - item4
+
+  # Tasks: the list of tasks that will be executed within the play, this section
+  #         can also be used for pre and post tasks
+  tasks:
+    - name: Test named list
+      debug:
+        msg: "{{ named_list }}"
+
+    - name: Test named list with dot notation
+      debug:
+        msg: "{{ named_list.0 }}"
+
+    - name: Test named list with bracket notation
+      debug:
+        msg: "{{ named_list[0] }}"
+
+  # Handlers: the list of handlers that are executed as a notify key from a task
+
+  # Roles: list of roles to be imported into the play
+...

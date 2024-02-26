@@ -1,0 +1,1 @@
+ansible-playbook varibles_playbook.yaml -e '{extra_vars_key: extra vars value}'

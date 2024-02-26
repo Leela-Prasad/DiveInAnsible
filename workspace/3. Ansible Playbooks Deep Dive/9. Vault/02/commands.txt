@@ -1,0 +1,68 @@
+ansible-vault encrypt_string --name "ansible_become_pass" "password"
+
+ansible_become_pass: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          38626433653066326561653639626631393366336432373565343062366431656635393338633862
+          3931353037313462393765326235396464666266613032630a303133313437356664643135376163
+          63316637663466383736343665613834646439646532326266316631613438623663333337623036
+          6636613366633265390a343461366263623261316339363865643661653066643832396438646236
+          3466
+		  
+		  
+ansible ubuntu --ask-vault-pass -m ping -o
+
+
+vi external_vault_vars.yaml
+external_vault_var: Example External Vault Var
+
+ansible-vault encrypt external_vault_vars.yaml 
+
+ansible@ubuntu-c:~/workspace$ cat external_vault_vars.yaml 
+$ANSIBLE_VAULT;1.1;AES256
+37323766393737666134393164643636316631613433656464323566663534616638326331616539
+6666333030313637646531633263643738363062663133350a633733633861646361666431373463
+63396139363366613433653534646338666138383430653934353936633032363932636336353663
+6261323031366633300a353232373562303539626630383839653237353039303739343934653832
+64326465313532333438386532646163626361393736323235643339666666663731333561386461
+6336386638363830343865666464643865376162363561373437
+
+
+
+ansible-playbook --ask-vault-pass test_playbook.yaml 
+
+
+ansible-vault decrypt external_vault_vars.yaml 
+
+ansible-vault rekey external_vault_vars.yaml 
+
+ansible@ubuntu-c:~/workspace$ ansible-vault view external_vault_vars.yaml 
+Vault password: 
+external_vault_var: Example External Vault Var
+
+ansible-vault view --vault-password-file password_file external_vault_vars.yaml 
+
+ansible-vault view --vault-id @prompt external_vault_vars.yaml 
+
+ansible-vault view --vault-id @password_file external_vault_vars.yaml 
+
+
+
+ansible-vault encrypt --vault-id vars@prompt external_vault_vars.yaml
+
+ansible-vault encrypt_string --vault-id ssh@prompt --name "ansible_become_pass" "password"
+
+ansible_become_pass: !vault |
+          $ANSIBLE_VAULT;1.2;AES256;ssh
+          30636239353462646531353030333738646339316264643837663063653336663763353536326661
+          6238663132396132323863393863303362613036383363330a383837393632636164626536306337
+          35306235343738343130393535636330666632323938616339666233393037613430656565366632
+          6362333933336661610a386434313066656363653962616138366432356236333966386330633931
+          3164
+
+
+ansible-playbook --vault-id vars@prompt --vault-id ssh@prompt test_playbook.yaml 
+
+
+ansible-vault encrypt --vault-id playbook@prompt test_playbook.yaml 
+
+ansible-playbook --vault-id vars@prompt --vault-id ssh@prompt --vault-id playbook@prompt test_playbook.yaml

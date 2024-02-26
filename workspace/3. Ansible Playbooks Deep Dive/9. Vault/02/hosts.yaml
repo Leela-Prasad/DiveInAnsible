@@ -1,0 +1,35 @@
+---
+control:
+  hosts:
+    ubuntu-c:
+      ansible_connection: local
+
+centos:
+  hosts:
+    centos1:
+      ansible_port: 2222
+    centos2:
+    centos3:
+  vars:
+    ansible_user: root
+
+ubuntu:
+  hosts:
+    ubuntu1:
+    ubuntu2:
+    ubuntu3:
+  vars:
+    ansible_become: true
+    ansible_become_pass: !vault |
+              $ANSIBLE_VAULT;1.2;AES256;ssh
+              30636239353462646531353030333738646339316264643837663063653336663763353536326661
+              6238663132396132323863393863303362613036383363330a383837393632636164626536306337
+              35306235343738343130393535636330666632323938616339666233393037613430656565366632
+              6362333933336661610a386434313066656363653962616138366432356236333966386330633931
+              3164
+
+linux:
+  children:
+    centos:
+    ubuntu:
+...

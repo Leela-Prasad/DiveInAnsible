@@ -1,0 +1,53 @@
+---
+# YAML documents begin with the document separator ---
+
+  # Hosts: where our play will run and options it will run with
+- hosts: linux
+
+  # Vars: variables that will apply to the play, on all target systems
+
+  # Tasks: the list of tasks that will be executed within the play, this section
+  # can also be used for pre and post tasks
+  tasks:
+    - name: Task 1
+      command: /bin/sleep 5
+      when: ansible_hostname == "centos1"
+      # wait for 10 seconds for task to complete 
+      # and poll every 1 second for status
+      async: 10
+      poll: 1
+
+    - name: Task 2
+      command: /bin/sleep 5
+      when: ansible_hostname == "centos2"
+      async: 10
+      poll: 1
+
+    - name: Task 3
+      command: /bin/sleep 5
+      when: ansible_hostname == "centos3"
+      async: 10
+      poll: 1
+
+    - name: Task 4
+      command: /bin/sleep 5
+      when: ansible_hostname == "ubuntu1"
+      async: 10
+      poll: 1
+
+    - name: Task 5
+      command: /bin/sleep 5
+      when: ansible_hostname == "ubuntu2"
+      async: 10
+      poll: 1
+
+    - name: Task 6
+      command: /bin/sleep 5
+      when: ansible_hostname == "ubuntu3"
+      async: 10
+      poll: 1
+
+
+  # Handlers: the list of handlers that are executed as a notify key from a task
+
+...

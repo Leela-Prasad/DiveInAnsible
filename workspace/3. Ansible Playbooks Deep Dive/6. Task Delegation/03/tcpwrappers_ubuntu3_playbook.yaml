@@ -1,0 +1,95 @@
+---
+# YAML documents begin with the document separator ---
+
+  # Hosts: where our play will run and options it will run with
+- hosts: ubuntu-c
+  gather_facts: False
+
+  # Vars: variables that will apply to the play, on all target systems
+
+  # Tasks: the list of tasks that will be executed within the play, this section
+  # can also be used for pre and post tasks
+  tasks:
+    - name: Generate an OpenSSH keypair for ubuntu3
+      openssh_keypair:
+        path: ~/.ssh/ubuntu3_id_rsa
+
+  # Hosts: where our play will run and options it will run with
+- hosts: linux
+  gather_facts: False
+
+  # Vars: variables that will apply to the play, on all target systems
+
+  # Tasks: the list of tasks that will be executed within the play, this section
+  # can also be used for pre and post tasks
+  tasks:
+    - name: Copy ubuntu3 OpenSSH keypair with permissions
+      copy:
+        owner: root
+        src: "{{ item.0 }}"
+        dest: "{{ item.0 }}"
+        mode: "{{ item.1 }}"
+      with_together:
+        - ["~/.ssh/ubuntu3_id_rsa", "~/.ssh/ubuntu3_id_rsa.pub"]
+        - ["0600", "0644"]
+
+  # Hosts: where our play will run and options it will run with
+- hosts: ubuntu3
+  gather_facts: False
+
+  # Vars: variables that will apply to the play, on all target systems
+
+  # Tasks: the list of tasks that will be executed within the play, this section
+  # can also be used for pre and post tasks
+  tasks:
+    - name: Add public key to ubuntu3 authorized file
+      authorized_key:
+        user: root
+        state: present
+        key: "{{ lookup('file', '~/.ssh/ubuntu3_id_rsa.pub') }}"
+
+
+- hosts: all
+  gather_facts: False
+
+  # Vars: variables that will apply to the play, on all target systems
+
+  # Tasks: the list of tasks that will be executed within the play, this section
+  # can also be used for pre and post tasks
+#  -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+  tasks:
+    - name: where our play will run command module
+      command: ssh -i ~/.ssh/ubuntu3_id_rsa root@ubuntu3 date
+      changed_when: False
+      ignore_errors: True
+
+  # Hosts: where our play will run and options it will run with
+- hosts: ubuntu-c, centos1, ubuntu1
+  serial: 1
+  # Vars: variables that will apply to the play, on all target systems
+
+  # Tasks: the list of tasks that will be executed within the play, this section
+  # can also be used for pre and post tasks
+  tasks:
+    - name: Add host to /etc/hosts.allow for sshd
+      lineinfile:
+        path: /etc/hosts.allow
+        line: "sshd: {{ ansible_hostname }}.diveinto.io"
+        create: True
+      delegate_to: ubuntu3
+
+- hosts: all
+  gather_facts: False
+
+  # Vars: variables that will apply to the play, on all target systems
+
+  # Tasks: the list of tasks that will be executed within the play, this section
+  # can also be used for pre and post tasks
+#  -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+  tasks:
+    - name: where our play will run command module
+      command: ssh -i ~/.ssh/ubuntu3_id_rsa root@ubuntu3 date
+      changed_when: False
+      ignore_errors: True
+
+...

@@ -1,0 +1,1 @@
+ansible-playbook varibles_playbook.yaml -l ubuntu-c

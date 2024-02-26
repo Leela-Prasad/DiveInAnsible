@@ -1,0 +1,1 @@
+ansible linux -m file -a "path=/home/ansible/facts.d state=absent"

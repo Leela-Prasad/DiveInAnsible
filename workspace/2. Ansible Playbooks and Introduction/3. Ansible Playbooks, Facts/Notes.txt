@@ -1,0 +1,49 @@
+ansible centos1 -m setup -a "gather_subset=network" 
+
+ansible centos1 -m setup -a "filter=ansible_memfree_mb"
+
+ansible centos1 -m setup -a "filter=ansible_mem*"
+
+** Any module returning a dictionary of 'ansible_facts' is added to the root of the facts namespace
+that is why in setup output we don't need prefix ansible_facts.
+
+ansible@ubuntu-c:~/workspace$ ansible centos1 -m setup -a "filter=ansible_mem*"
+centos1 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_memfree_mb": 204,
+        "ansible_memory_mb": {
+            "nocache": {
+                "free": 2223,
+                "used": 1578
+            },
+            "real": {
+                "free": 204,
+                "total": 3801,
+                "used": 3597
+            },
+            "swap": {
+                "cached": 0,
+                "free": 1021,
+                "total": 1024,
+                "used": 3
+            }
+        },
+        "ansible_memtotal_mb": 3801,
+        "discovered_interpreter_python": "/usr/libexec/platform-python"
+    },
+    "changed": false
+}
+
+In the above example we can use below variables without ansible_facts prefix
+{{ ansible_memfree_mb }}
+{{ ansible_memory_mb.real.free }}
+
+
+
+Facts:
+Custom Facts can be written in JSON or ini structure
+By default custom facts are expected to be in /etc/ansible/facts.d directory
+we can use non-root user also to define custom facts 
+
+
+ansible ubuntu-c -m setup -a "filter=ansible_local"

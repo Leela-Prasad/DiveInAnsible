@@ -1,0 +1,26 @@
+---
+-
+  # Hosts: where our play will run and options it will run with
+  hosts: all
+
+  # Vars: variables that will apply to the play, on all target systems
+
+  # Tasks: the list of tasks that will be executed within the play, this section
+  #         can also be used for pre and post tasks
+  tasks:
+    - name: Ansible Jinja2 for range reversed (simulate while greater 5)
+      debug:
+        msg: >
+             --== Ansible Jinja2 for range reversed (simulate while greater 5) ==--
+             {% for entry in range(10, 0, -1) -%}
+                 {% if entry == 5 -%}
+                    {% break %}
+                 {% endif %}
+                 {{ entry }}
+             {% endfor %}
+             
+
+  # Handlers: the list of handlers that are executed as a notify key from a task
+
+  # Roles: list of roles to be imported into the play
+...

@@ -1,0 +1,25 @@
+ansible all -m ping -o
+
+ansible centos -m ping -o
+
+ansible ubuntu -m ping -o
+
+ansible centos1 -m ping -o
+
+ansible '*' -m ping -o
+
+ansible 'cent*' -m ping -o
+
+ansible centos --list
+
+ansible ubuntu --list-hosts
+
+ansible all --list
+
+ansible centos2 --list
+
+ansible ~.*3 -m ping -o
+
+Here ~ means regex
+. means Any character
+* means any number of previous character

@@ -1,0 +1,3 @@
+ansible linux -m file -a "path=/etc/ansible/facts.d/getdate1.fact state=absent"
+
+ansible linux -m file -a "path=/etc/ansible/facts.d/getdate2.fact state=absent"

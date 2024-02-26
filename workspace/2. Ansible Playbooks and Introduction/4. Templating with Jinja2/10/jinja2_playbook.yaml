@@ -1,0 +1,36 @@
+---
+-
+  # Hosts: where our play will run and options it will run with
+  hosts: all
+
+  # Vars: variables that will apply to the play, on all target systems
+
+  # Tasks: the list of tasks that will be executed within the play, this section
+  #         can also be used for pre and post tasks
+  tasks:
+    - name: Ansible Jinja2 filters
+      debug:
+        msg: >
+             --== Ansible Jinja2 filters ==--
+             --== min [1, 2, 3, 4, 5] ==--
+             {{ [1, 2, 3, 4, 5] | min }}
+          
+             --== max [1, 2, 3, 4, 5] ==--
+             {{ [1, 2, 3, 4, 5] | max }}
+          
+             --== unique [1, 1, 2, 2, 3, 3, 4, 4, 5, 5] ==--
+             {{ [1, 1, 2, 2, 3, 3, 4, 4, 5, 5] | unique }}
+          
+             --== difference [1, 2, 3, 4, 5] vs [2, 3, 4] ==--
+             {{ [1, 2, 3, 4, 5] | difference([2, 3, 4]) }}
+          
+             --== random ['rod', 'jane', 'fred'] ==--
+             {{ ['rod', 'jane', 'fred'] | random }}
+          
+             --== urlsplit hostname ==--
+             {{'http://docs.ansible.com/ansible/latest/playbooks_filters.html' | urlsplit('hostname') }}
+
+  # Handlers: the list of handlers that are executed as a notify key from a task
+
+  # Roles: list of roles to be imported into the play
+...

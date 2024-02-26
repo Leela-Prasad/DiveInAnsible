@@ -1,0 +1,15 @@
+---
+# YAML documents begin with the document separator ---
+
+# Hosts: where our play will run and options it will run with
+- hosts: linux
+
+  # Tasks: the list of tasks that will be executed within the play, this section
+  # can also be used for pre and post tasks
+  tasks:
+    - name: Play1 - Task1
+      debug:
+        msg: Play1 - Task1
+
+    - include_tasks: play1_task2.yaml
+...

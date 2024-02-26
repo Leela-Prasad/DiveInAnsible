@@ -1,0 +1,20 @@
+---
+# YAML documents begin with the document separator ---
+
+# Hosts: where our play will run and options it will run with
+- hosts: centos1
+  # Tasks: the list of tasks that will be executed within the play, this section
+  # can also be used for pre and post tasks
+  tasks:
+    - debug:
+        msg: =================== Testing include_tasks ===================
+
+    - include_tasks: include_tasks.yaml
+      when: include_tasks_var is not defined
+
+    - debug:
+        msg: =================== Testing import_tasks ===================
+
+    - import_tasks: import_tasks.yaml
+      when: import_tasks_var is not defined
+...
